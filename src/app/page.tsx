@@ -4,6 +4,7 @@ import { Problem } from "@/components/problem";
 import { Pillars } from "@/components/pillars";
 import { HowItWorks } from "@/components/how-it-works";
 import { Faq } from "@/components/faq";
+import { Footer } from "@/components/footer";
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
         <HowItWorks />
         <Faq />
       </main>
+      <Footer />
     </>
   );
 }
