@@ -36,3 +36,6 @@ Thumbs.db
 
 # brainstorm artifacts
 .superpowers/
+
+# playwright mcp artifacts
+.playwright-mcp/
