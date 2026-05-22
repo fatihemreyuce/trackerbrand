@@ -1,10 +1,13 @@
 import { Nav } from "@/components/nav";
+import { Hero } from "@/components/hero";
 
 export default function HomePage() {
   return (
     <>
       <Nav />
-      <main id="top" className="min-h-screen" />
+      <main>
+        <Hero />
+      </main>
     </>
   );
 }
