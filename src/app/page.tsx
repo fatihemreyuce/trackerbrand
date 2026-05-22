@@ -1,3 +1,10 @@
+import { Nav } from "@/components/nav";
+
 export default function HomePage() {
-  return <main className="min-h-screen">Tracker landing (bootstrap)</main>;
+  return (
+    <>
+      <Nav />
+      <main id="top" className="min-h-screen" />
+    </>
+  );
 }
