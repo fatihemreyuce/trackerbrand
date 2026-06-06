@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { demoSchema, type DemoInput } from "@/lib/demo-schema";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sendDemoMail } from "@/lib/mail";
+import { saveTrackerContact } from "@/lib/save-contact";
 
 export type SubmitResult = { ok: true } | { ok: false; error: string };
 
@@ -23,13 +24,34 @@ export async function submitDemoRequest(raw: DemoInput): Promise<SubmitResult> {
   }
 
   const { honeypot: _honeypot, ...payload } = parsed.data;
-  const result = await sendDemoMail({
-    ...payload,
-    meta: { ip, userAgent, timestamp: new Date().toISOString() },
-  });
 
-  if (!result.ok) {
-    return { ok: false, error: "Mail gönderilemedi. Lütfen info@collbrai.com adresine yaz." };
+  const [mailResult, saveResult] = await Promise.all([
+    sendDemoMail({
+      ...payload,
+      meta: { ip, userAgent, timestamp: new Date().toISOString() },
+    }),
+    saveTrackerContact({
+      name: payload.name,
+      email: payload.email,
+      company: payload.company,
+      teamSize: payload.teamSize,
+      message: payload.message,
+      userAgent,
+    }),
+  ]);
+
+  if (!mailResult.ok) {
+    console.error("Demo mail failed:", mailResult.error);
+  }
+  if (!saveResult.ok) {
+    console.error("Firestore save failed:", saveResult.error);
+  }
+
+  if (!mailResult.ok && !saveResult.ok) {
+    return {
+      ok: false,
+      error: "Talebin iletilemedi. Lütfen info@collbrai.com adresine yaz.",
+    };
   }
   return { ok: true };
 }

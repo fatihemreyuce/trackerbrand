@@ -5,15 +5,21 @@ vi.mock("@/lib/mail", () => ({
   sendDemoMail: vi.fn().mockResolvedValue({ ok: true }),
 }));
 
+vi.mock("@/lib/save-contact", () => ({
+  saveTrackerContact: vi.fn().mockResolvedValue({ ok: true }),
+}));
+
 vi.mock("next/headers", () => ({
-  headers: async () => new Headers({
-    "x-forwarded-for": "9.9.9.9",
-    "user-agent": "TestUA",
-  }),
+  headers: async () =>
+    new Headers({
+      "x-forwarded-for": "9.9.9.9",
+      "user-agent": "TestUA",
+    }),
 }));
 
 import { submitDemoRequest } from "@/app/actions/submit-demo";
 import { sendDemoMail } from "@/lib/mail";
+import { saveTrackerContact } from "@/lib/save-contact";
 
 const validInput = {
   name: "Test User",
@@ -30,10 +36,11 @@ describe("submitDemoRequest", () => {
     vi.clearAllMocks();
   });
 
-  it("returns ok:true on valid input and calls sendDemoMail", async () => {
+  it("returns ok:true and calls both sendDemoMail and saveTrackerContact", async () => {
     const result = await submitDemoRequest(validInput);
     expect(result.ok).toBe(true);
     expect(sendDemoMail).toHaveBeenCalledOnce();
+    expect(saveTrackerContact).toHaveBeenCalledOnce();
   });
 
   it("returns validation errors when input is invalid", async () => {
@@ -42,10 +49,11 @@ describe("submitDemoRequest", () => {
     if (!result.ok) expect(result.error).toMatch(/mail/i);
   });
 
-  it("rejects honeypot-filled input as spam without sending mail", async () => {
+  it("rejects honeypot-filled input as spam without calling either backend", async () => {
     const result = await submitDemoRequest({ ...validInput, honeypot: "BUY VIAGRA" });
     expect(result.ok).toBe(false);
     expect(sendDemoMail).not.toHaveBeenCalled();
+    expect(saveTrackerContact).not.toHaveBeenCalled();
   });
 
   it("rate limits after 3 submissions in a minute", async () => {
@@ -57,8 +65,15 @@ describe("submitDemoRequest", () => {
     if (!result.ok) expect(result.error).toMatch(/çok fazla|rate/i);
   });
 
-  it("returns ok:false when mail send fails", async () => {
+  it("returns ok:true when mail fails but Firestore save succeeds", async () => {
     vi.mocked(sendDemoMail).mockResolvedValueOnce({ ok: false, error: "smtp" });
+    const result = await submitDemoRequest(validInput);
+    expect(result.ok).toBe(true);
+  });
+
+  it("returns ok:false only when BOTH mail and save fail", async () => {
+    vi.mocked(sendDemoMail).mockResolvedValueOnce({ ok: false, error: "smtp" });
+    vi.mocked(saveTrackerContact).mockResolvedValueOnce({ ok: false, error: "firestore" });
     const result = await submitDemoRequest(validInput);
     expect(result.ok).toBe(false);
   });
