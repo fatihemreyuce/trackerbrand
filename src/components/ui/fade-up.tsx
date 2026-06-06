@@ -19,11 +19,8 @@ type Props = {
 export function FadeUp({ children, delay = 0, className, as: Tag = "div" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [shouldAnimate, setShouldAnimate] = useState(false);
-  const [armed, setArmed] = useState(false);
 
   useEffect(() => {
-    // Mark as armed on the client so we know to play the animation
-    setArmed(true);
     const node = ref.current;
     if (!node) return;
 
@@ -46,9 +43,6 @@ export function FadeUp({ children, delay = 0, className, as: Tag = "div" }: Prop
     obs.observe(node);
     return () => obs.disconnect();
   }, []);
-
-  // void armed warning — kept for future use (e.g., to add will-change before animation)
-  void armed;
 
   return (
     <Tag

@@ -101,7 +101,7 @@ export function Screenshots() {
               </div>
               <div
                 key={current.id}
-                className="relative aspect-video animate-[tab-fade_0.25s_ease-out]"
+                className="relative sm:aspect-video animate-[tab-fade_0.25s_ease-out]"
               >
                 <Mock />
               </div>

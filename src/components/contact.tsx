@@ -186,7 +186,7 @@ export function Contact() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 mb-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
                   <div>
                     <label className="block text-[11px] uppercase tracking-[0.1em] text-ink-dark-soft font-semibold mb-1.5">
                       E-mail
@@ -246,7 +246,7 @@ export function Contact() {
                 <button
                   type="submit"
                   disabled={submitState === "submitting"}
-                  className="group w-full h-12 rounded-md bg-[linear-gradient(135deg,var(--color-ochre-dark),var(--color-clay))] text-paper-dark-deeper text-sm font-semibold transition-all hover:shadow-[0_0_36px_-6px_rgba(212,164,68,0.7)] disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
+                  className="btn-sheen group w-full h-12 rounded-md bg-[linear-gradient(135deg,var(--color-ochre-dark),var(--color-clay))] text-paper-dark-deeper text-sm font-semibold transition-all hover:shadow-[0_0_36px_-6px_rgba(212,164,68,0.7)] disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
                 >
                   {submitState === "submitting" ? (
                     "Gönderiliyor…"

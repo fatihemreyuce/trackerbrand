@@ -105,6 +105,38 @@
   }
 }
 
+@keyframes bar-grow {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--bar-target, 0%);
+  }
+}
+
+/* light sheen that sweeps across a button on hover */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.btn-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateX(-120%) skewX(-12deg);
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 70%
+  );
+  transition: transform 0.9s ease;
+}
+.btn-sheen:hover::before {
+  transform: translateX(120%) skewX(-12deg);
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

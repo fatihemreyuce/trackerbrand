@@ -1,4 +1,6 @@
+import type { CSSProperties } from "react";
 import { Check, Circle, CircleDot, Sparkles } from "lucide-react";
+import { CountUp } from "@/components/ui/count-up";
 
 const tasks = [
   {
@@ -29,9 +31,9 @@ const tasks = [
 
 export function HeroMock() {
   return (
-    <div className="relative">
+    <div className="relative md:rotate-[1.2deg] md:-translate-y-2 origin-top-left">
       {/* tilted container */}
-      <div className="relative rounded-2xl border border-hairline bg-paper-soft shadow-lift md:rotate-[1.2deg] md:-translate-y-2 origin-top-left overflow-hidden">
+      <div className="relative rounded-2xl border border-hairline bg-paper-soft shadow-lift overflow-hidden">
         {/* faux app nav */}
         <div className="flex items-center justify-between border-b border-hairline-soft px-4 py-3 bg-paper-soft/80">
           <div className="flex items-center gap-2">
@@ -60,7 +62,8 @@ export function HeroMock() {
               <h4 className="text-base font-semibold text-ink tracking-tight">Merhaba Fatih 👋</h4>
             </div>
             <span className="inline-flex items-center gap-1 text-[10px] font-medium text-ochre-deep bg-ochre-soft px-2 py-1 rounded-full">
-              <Sparkles className="w-3 h-3" aria-hidden />3 görev
+              <Sparkles className="w-3 h-3" aria-hidden />
+              <CountUp to={3} /> görev
             </span>
           </div>
 
@@ -68,7 +71,8 @@ export function HeroMock() {
             {tasks.map((t, i) => (
               <div
                 key={t.title}
-                className="flex items-center gap-3 rounded-md border border-hairline-soft bg-paper px-3 py-2.5 group"
+                style={{ animationDelay: `${200 + i * 110}ms` }}
+                className="flex items-center gap-3 rounded-md border border-hairline-soft bg-paper px-3 py-2.5 group animate-[fade-up_0.5s_ease-out_both] motion-reduce:animate-none"
               >
                 <t.icon
                   className={`w-4 h-4 shrink-0 ${t.iconClass} ${i === 0 ? "animate-[pulse-soft_2.5s_ease-in-out_infinite]" : ""}`}
@@ -99,18 +103,18 @@ export function HeroMock() {
             </div>
             <div className="h-1.5 rounded-full bg-paper overflow-hidden">
               <div
-                className="h-full rounded-full bg-[linear-gradient(90deg,var(--color-ochre),var(--color-clay))]"
-                style={{ width: "68%" }}
+                className="h-full w-[68%] rounded-full bg-[linear-gradient(90deg,var(--color-ochre),var(--color-clay))] animate-[bar-grow_1.1s_ease-out_350ms_both] motion-reduce:animate-none"
+                style={{ "--bar-target": "68%" } as CSSProperties}
               />
             </div>
           </div>
         </div>
+      </div>
 
-        {/* corner +3 badge */}
-        <div className="absolute -right-2 -top-2 inline-flex items-center gap-1 px-2 py-1 rounded-full bg-ink text-paper text-[10px] font-semibold shadow-soft">
-          <Check className="w-3 h-3 text-ochre-dark" aria-hidden />
-          Bugün hazır
-        </div>
+      {/* corner badge — bottom-right, outside overflow-hidden so it isn't clipped */}
+      <div className="absolute -right-2 -bottom-2 inline-flex items-center gap-1 px-2 py-1 rounded-full bg-ink text-paper text-[10px] font-semibold shadow-soft">
+        <Check className="w-3 h-3 text-ochre-dark" aria-hidden />
+        Bugün hazır
       </div>
     </div>
   );

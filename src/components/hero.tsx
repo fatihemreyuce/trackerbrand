@@ -1,24 +1,14 @@
 import { Check } from "lucide-react";
 import { HeroMock } from "@/components/hero-mock";
-import { GradientOrb } from "@/components/ui/gradient-orb";
+import { HeroOrbs } from "@/components/hero-orbs";
 
 const trustItems = ["Self-hosted", "2 dakikada kuruluyor", "Kredi kartı yok"];
 
 export function Hero() {
   return (
     <section id="top" className="relative overflow-hidden">
-      {/* ambient gradient orb */}
-      <GradientOrb
-        tone="warm"
-        size="xl"
-        className="-right-40 -top-40 opacity-20 md:opacity-25"
-      />
-      <GradientOrb
-        tone="clay"
-        size="md"
-        drift={false}
-        className="-left-32 top-40 opacity-15 hidden md:block"
-      />
+      {/* ambient gradient orbs with mouse parallax */}
+      <HeroOrbs />
 
       <div className="relative mx-auto max-w-12xl px-8 pt-16 pb-24 md:pt-20 md:pb-28 grid gap-12 md:grid-cols-12 items-center">
         {/* text column */}
@@ -64,7 +54,7 @@ export function Hero() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <a
               href="#contact"
-              className="group inline-flex items-center gap-2 h-12 px-6 rounded-md bg-ink text-paper text-sm font-semibold transition-all hover:shadow-[0_0_40px_-6px_rgba(184,134,11,0.6)] hover:-translate-y-0.5"
+              className="btn-sheen group inline-flex items-center gap-2 h-12 px-6 rounded-md bg-ink text-paper text-sm font-semibold transition-all hover:shadow-[0_0_40px_-6px_rgba(184,134,11,0.6)] hover:-translate-y-0.5"
             >
               Demo iste
               <span aria-hidden className="transition-transform group-hover:translate-x-0.5">

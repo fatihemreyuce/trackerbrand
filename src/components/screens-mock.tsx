@@ -225,8 +225,8 @@ export function KanbanMock() {
   return (
     <MockChrome path="kanban">
       <Sidebar active="kanban" />
-      <div className="flex-1 overflow-hidden p-3">
-        <div className="grid grid-cols-4 gap-2 h-full">
+      <div className="flex-1 p-3 sm:overflow-hidden">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:h-full">
           {kanbanCols.map((col) => (
             <div key={col.title} className="flex flex-col min-w-0">
               <div className="flex items-center justify-between mb-2 px-1">
